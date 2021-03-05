@@ -44,3 +44,18 @@ HelloService@localhost:50051>
 }
 
 ```
+
+# 必要変更箇所
+
+Dockerfile L17
+```dockerfile
+LABEL org.opencontainers.image.source https://github.com/twin-te/grpc-ts-template
+```
+後ろのurlを自分のレポジトリのurlに変更する。（DockerImageとレポジトリの紐付けを行う）
+
+.github/workflows/release.yml L17
+```yml
+run: echo "TAG_NAME=ghcr.io/twin-te/grpc-ts-template:${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+```
+TAG_NAME=ghcr.io/twin-te/{自分のレポジトリ名} に変更する（GitHubContainerRegistryにプッシュするときに使う）
+
