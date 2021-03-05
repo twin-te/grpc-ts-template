@@ -45,17 +45,27 @@ HelloService@localhost:50051>
 
 ```
 
+# GitHub Actions
+- `.github/workflows/test.yml` pushされるとテストを実行する
+- `.github/workflows/release.yml` GitHub上でリリースをPublishするとDockerImageをビルドし、GHCRにプッシュする。
+
 # 必要変更箇所
 
-Dockerfile L17
+1. Dockerfile L17
 ```dockerfile
 LABEL org.opencontainers.image.source https://github.com/twin-te/grpc-ts-template
 ```
 後ろのurlを自分のレポジトリのurlに変更する。（DockerImageとレポジトリの紐付けを行う）
 
-.github/workflows/release.yml L17
+2. .github/workflows/release.yml L17
 ```yml
 run: echo "TAG_NAME=ghcr.io/twin-te/grpc-ts-template:${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 ```
 TAG_NAME=ghcr.io/twin-te/{自分のレポジトリ名} に変更する（GitHubContainerRegistryにプッシュするときに使う）
 
+3. GitHubのSettings > Secrets > New repository secret で以下の環境変数を登録（GitHubAction用）
+
+|名前|説明|
+|:---|:---|
+|CR_PAT| GitHubContainerRegistry:write の権限を持ったPersonalAccessToken|
+|CR_USER|PersonalAccessTokenを作ったユーザー名|
